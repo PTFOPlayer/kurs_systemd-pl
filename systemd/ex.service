@@ -1,0 +1,12 @@
+[Unit]
+;opis unitu
+Description = "opis"
+;nazwa unitu
+Name = "nazwa"
+
+[Service]
+;rozpoczęcie procesu
+ExecStart = null
+;zatrzymanie prcesu
+ExecStop = null
+Type = simple

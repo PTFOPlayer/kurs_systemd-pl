@@ -1,0 +1,39 @@
+# Podstawowe wiadomości
+## Czym jest systemd
+    Można myśleć o nim jak o starszym init, czyli o programie który ma na celu uruchomienie jakiegoś procesu przy auto-starcie. Systemd zaczyna swoje działanie w PID 1 ( inicjalizacja systemu ) gdzie najpierw uruchamia wszystkie podstawowe procesy konieczne do poprawnego uruchomienia systemu, a następnie procesy związane z odpowiadającymi poziomami SysV dbając o kolejność uruchamiania tych procesów. Systemd udostępnia urzytkownikowi równierz opcję tworzenia wielowątkowości w programach poprzez udostępnianie urzytkownikowi socketów i D-bus (komunikacja między procesowa). 
+
+### Czym jest Daemon?
+    Daemon (a w nazewnictwie systemd "service" czyli serwis oraz "unit" czyli segment) jest po prostu zestawem zasad do uruchmoeniania danego procesu pracującego w tle, do którego urzytkownik nie ma dostepu. Na przykład syslogd jest daeomonem odpowiadającym za logowanie urzytkownika, sam użytkownik nie ma dostępu do samego procesu, ale używa go pośrednio podczas logowania się do systemu
+
+### Przykłady procesów
+    Do przykładowych procesów wywoływanych przez systemd możemy zaliczyć: wyłączanie i ponownym uruchomienie systemu, montowanie urządzeń pamięci masowej, uruchamianie menedżera logowania, procesy konfiguracji systemu (ex. nazwa hosta jest ustawiana przez systemd przy uruchomieniu), synchronizacja czasu i lokalizacji, maszyny wirtualne i kontenery.
+
+# Użytkowanie
+## Komendy zwracające stan systemu
+| komenda | akcja | dodatkowe |
+|---------|-------|-----------|
+| systemctl status | podaje status wszystkich daemonów||
+| systemctl | zwraca listę aktywnych daeomonów | z flagą `--failed` zwraca daemony które nie poprawnie wystartowały |
+| systemctl list-unit-files | zwraca listę zainstalowanych daemonów ||
+| systemctl status `<nazwa_unita/nazwa_daemona>` | zwraca status danego daemona| informuje równierz czy dany unit jest uruchomiony | 
+| systemctl help `<nazwa_unita/nazwa_daemona>` | zwraca man-page dla danego unita | działa tylko jeżeli dany unit ma swój man-page|
+| systemctl is-enabled `<nazwa_unita/nazwa_daemona>` | mówi czy dany unit jest wrzucony do autostartu ||
+
+Notka: powyższe komendy (zazwyczaj) nie muszą być wykonywane jako root
+
+## Określanie podstawowych informacji o unicie odbywa się w sekcji Unit:
+`[Unit]`
+
+## W sekcji unit mogą się znajdować takie właściwości jak:
+* `Description` - odpowiada za opis unitu
+* `Name` - odpowiada za nazwe
+* `Requires` - określa jaki inny unit jest potrzebny do działania tego
+* `After` - określa po wystartowaniu jakiego unita ten ma się włączyć
+* `Wants` - działa podobnie do `Requires` lecz jeśli unit nie istnieje to nie będzie oczekiwał na jego uruchomienie 
+* `OnFailure` - określa co się ma wydażyć po błędzie
+
+## Określenie wykonywanych akcji przez dany unit odbywa się w sekcji Service:
+`[Service]`
+ExecStart
+ExecStop
+Type
