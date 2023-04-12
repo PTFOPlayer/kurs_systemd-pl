@@ -3,10 +3,12 @@
 Description = "opis"
 ;nazwa unitu
 Name = "nazwa"
-
+; rozpoczyna po posiadaniu sieci
+Wants=network-online.target
+After=network-online.target
 [Service]
 ;rozpoczęcie procesu
-ExecStart = null
+ExecStart = echo a
 ;zatrzymanie prcesu
-ExecStop = null
+;ExecStop = 
 Type = simple

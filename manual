@@ -18,8 +18,34 @@
 | systemctl status `<nazwa_unita/nazwa_daemona>` | zwraca status danego daemona| informuje równierz czy dany unit jest uruchomiony | 
 | systemctl help `<nazwa_unita/nazwa_daemona>` | zwraca man-page dla danego unita | działa tylko jeżeli dany unit ma swój man-page|
 | systemctl is-enabled `<nazwa_unita/nazwa_daemona>` | mówi czy dany unit jest wrzucony do autostartu ||
+>Notka: powyższe komendy (zazwyczaj) nie muszą być wykonywane jako root
 
-Notka: powyższe komendy (zazwyczaj) nie muszą być wykonywane jako root
+## Zarządzanie serwisami i unitami
+
+| komenda                                           | akcja                                     | dodatkowe                                                    |
+|---------------------------------------------------|-------------------------------------------|--------------------------------------------------------------|
+| systemctl start `<nazwa_unita/nazwa_daemona>`     | rozpoczyna pracę danego unitu             |                                                              |
+| systemctl stop `<nazwa_unita/nazwa_daemona>`      | kończy pracę danego unitu                 |                                                              |
+| systemctl restart `<nazwa_unita/nazwa_daemona>`   | restartuje dany unit                      |                                                              |
+| systemctl reload `<nazwa_unita/nazwa_daemona>`    | restartuje dany unit i jego konfiguracje  |                                                              |
+| systemctl daemon-reload                           | reload ale dla wszystkich serwisów        |                                                              |
+| systemctl enable `<nazwa_unita/nazwa_daemona>`    | wrzuca dany unit do autostartu            | z flagą `--now` wykonuje dodatkowo to samo co start          |
+| systemctl disable `<nazwa_unita/nazwa_daemona>`   | usuwa dany unit z autostartu              |                                                              |
+| systemctl enable `<nazwa_unita/nazwa_daemona>`    | dodaje dany unit do autostartu            |                                                              |
+| systemctl reenable `<nazwa_unita/nazwa_daemona>`  | przywraca dany unit do autostartu         | jeżeli unit jest w autostarcie to go usuwa i dodaje ponownie |
+>Notka: wszystkie te komendy powinny być wykonane jako root
+
+## Zarządzanie zasilaniem za pomocą systemctl
+
+| komenda               | akcja                         |
+|-----------------------|-------------------------------|
+| systemctl reboot      | uruchamia ponownie urządzenie |
+| systemctl power-off   | wyłącza urządzenie            |
+| systemctl suspend     | zawiesza pracę systemu        |
+| systemctl hibernate   | usypia urządzenie             |
+| systemctl hybrid-sleep| połączenie suspend i hibernate|
+
+# Pisanie własnych serwisów
 
 ## Określanie podstawowych informacji o unicie odbywa się w sekcji Unit:
 `[Unit]`
@@ -34,6 +60,33 @@ Notka: powyższe komendy (zazwyczaj) nie muszą być wykonywane jako root
 
 ## Określenie wykonywanych akcji przez dany unit odbywa się w sekcji Service:
 `[Service]`
-ExecStart
-ExecStop
-Type
+* `ExecStart` - rozpoczyna proces
+* `ExecStop` - kończy proces
+* `Restart` - określa kiedy proces powinien być uruchomiony ponownie
+* `RestartSec` - określa po ilu sekundach proces zostanie uruchomiony ponownie (musi być określone kiedy proces ma być restartowany)
+* `Type` - określa typ serwicsu
+
+### Dostępne typy:
+
+* `Type = simple` - ustawiany domyślnie, umożliwia odpalanie procesu jedno wątkowego ( wielowątkowy zadziała ale systemd nie będzie śledził podprocesów) 
+* `Type = forking` - umożliwia odpalenie procesu który działa na wielu wątkach i systemd śledzi podprocesy (zlaeca się dodanie `PIDFile=<ścieżka_do_pliku>` w celu zapewnienia prawidłowego śledzenia procesów)
+* `Type = oneshot` - systemd uruchamia proces który ma się zakończyć z kodem po wykonaniu zadania (dodanie dodatkowo `RemainAfterExit=Yes` powoduje że po zakończeniu procesu systemd dalej uznaje serwis za aktywny)
+* `Type = notify` - to samo co simple lecz systemd dostanie informacje co do momentu gotowości procesu (gotowość nie znaczy że proces się rozpocznie)
+* `Type = dbus` - serwis zostaje uznany za gotowy do odpalenia jeżeli `BusName` pojawi się w dbus
+* `Type = idle` - to samo co simple lecz systemd zaczeka aż wszystkie procesy będą możliwe do odpalenia jednocześnie
+
+## Określanie momentu odpalenia serwisu następuje w sekcji Install:
+`[Install]`
+* `WantedBy` - określa przed wejściem w jaki `runlevel` serwis ma być odpalony
+
+| Runlevel | cel                                                    | dodatkowe                                                         |
+|----------|--------------------------------------------------------|-------------------------------------------------------------------|
+|0         | runlevel0.target, poweroff.target                      | działa tuż przed wyłączeniem systemu                              |
+|1, s      | runlevel1.target, singleuser.target                    | tryb pojedyńczego urzytkownika                                    |
+|2, 4      | runlevel2.target, runlevel2.target, multi-user.target  | zdefiniowane przez użytkowinka, domyślnie to samo co poziom 3     |
+|3         | runlevel3.target, multi-user.target                    | wiele urzytkowników bez trybu graficznego (wiele konsol)          |
+|5         | runlevel5.target, graphical.target                     | tryb graficzny                                                    |
+|6         | runlevel6.target, reboot.target                        | działa tuż przed rebootem                                         |
+|emergency | emergency.target                                       | shell awaryjny                                                    |
+
+>Notka: Jeżeli w `[unit]` jest określony `Requires=` z jakimś runlevel-em to serwis będzie uruchamiany po tym runlevelu a nie w trakcie uruchamiania
