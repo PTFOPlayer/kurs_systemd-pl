@@ -9,6 +9,9 @@ After=network-online.target
 [Service]
 ;rozpoczęcie procesu
 ExecStart = echo a
-;zatrzymanie prcesu
-;ExecStop = 
+;typ procesu
 Type = simple
+
+[Install]
+;moment uruchomienia po dodaniu do autostartu
+WantedBy = graphical.target

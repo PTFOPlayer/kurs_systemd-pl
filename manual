@@ -90,3 +90,14 @@
 |emergency | emergency.target                                       | shell awaryjny                                                    |
 
 >Notka: Jeżeli w `[unit]` jest określony `Requires=` z jakimś runlevel-em to serwis będzie uruchamiany po tym runlevelu a nie w trakcie uruchamiania
+
+## Dodawanie unitów do systemd
+Jest wiele miejsc w których znajdują się odpalalne serwisy systemd, między innymi:
+ * `/lib/systemd/system` - pliki dodane przez distro
+ * `/usr/lib/systemd/system` - pliki dodane przez pakiety
+ * `/run/systemd/system` - tymczasowe 
+ * `/etc/systemd/system` - to nas interesuje
+
+`/etc/systemd/system` posiada pliki skonfigurowane przez użytownika, ma najwyższy proirytet więc jeśli znajduje się gdzieś indziej unit o takiej samej nazwie jak w tej lokalizacji to nie zostanie od uruchomiony
+
+>Notka: dobrą praktyką jest wykonanie `systemctl daemon-reload` po dodaniu nowego unita żeby systemd sprawdził sobie na nowo zależności pomiędzy unitami 
