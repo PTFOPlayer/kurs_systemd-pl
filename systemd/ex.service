@@ -8,10 +8,10 @@ Wants=network-online.target
 After=network-online.target
 [Service]
 ;rozpoczęcie procesu
-ExecStart = echo a
+ExecStart = /usr/bin/exprogram.out
 ;typ procesu
 Type = simple
 
 [Install]
 ;moment uruchomienia po dodaniu do autostartu
-WantedBy = graphical.target
+WantedBy = multi-user.target
