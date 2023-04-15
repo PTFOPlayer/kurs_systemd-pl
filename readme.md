@@ -1,12 +1,12 @@
 # Podstawowe wiadomości
 ## Czym jest systemd
-    Można myśleć o nim jak o starszym init, czyli o programie który ma na celu uruchomienie jakiegoś procesu przy auto-starcie. Systemd zaczyna swoje działanie w PID 1 ( inicjalizacja systemu ) gdzie najpierw uruchamia wszystkie podstawowe procesy konieczne do poprawnego uruchomienia systemu, a następnie procesy związane z odpowiadającymi poziomami SysV dbając o kolejność uruchamiania tych procesów. Systemd udostępnia urzytkownikowi równierz opcję tworzenia wielowątkowości w programach poprzez udostępnianie urzytkownikowi socketów i D-bus (komunikacja między procesowa). 
+Można myśleć o nim jak o starszym init, czyli o programie który ma na celu uruchomienie jakiegoś procesu przy auto-starcie. Systemd zaczyna swoje działanie w PID 1 ( inicjalizacja systemu ) gdzie najpierw uruchamia wszystkie podstawowe procesy konieczne do poprawnego uruchomienia systemu, a następnie procesy związane z odpowiadającymi poziomami SysV dbając o kolejność uruchamiania tych procesów. Systemd udostępnia urzytkownikowi równierz opcję tworzenia wielowątkowości w programach poprzez udostępnianie urzytkownikowi socketów i D-bus (komunikacja między procesowa). 
 
 ### Czym jest Daemon?
-    Daemon (a w nazewnictwie systemd "service" czyli serwis oraz "unit" czyli segment) jest po prostu zestawem zasad do uruchmoeniania danego procesu pracującego w tle, do którego urzytkownik nie ma dostepu. Na przykład syslogd jest daeomonem odpowiadającym za logowanie urzytkownika, sam użytkownik nie ma dostępu do samego procesu, ale używa go pośrednio podczas logowania się do systemu
+Daemon (a w nazewnictwie systemd "service" czyli serwis oraz "unit" czyli segment) jest po prostu zestawem zasad do uruchmoeniania danego procesu pracującego w tle, do którego urzytkownik nie ma dostepu. Na przykład syslogd jest daeomonem odpowiadającym za logowanie urzytkownika, sam użytkownik nie ma dostępu do samego procesu, ale używa go pośrednio podczas logowania się do systemu
 
 ### Przykłady procesów
-    Do przykładowych procesów wywoływanych przez systemd możemy zaliczyć: wyłączanie i ponownym uruchomienie systemu, montowanie urządzeń pamięci masowej, uruchamianie menedżera logowania, procesy konfiguracji systemu (ex. nazwa hosta jest ustawiana przez systemd przy uruchomieniu), synchronizacja czasu i lokalizacji, maszyny wirtualne i kontenery.
+Do przykładowych procesów wywoływanych przez systemd możemy zaliczyć: wyłączanie i ponownym uruchomienie systemu, montowanie urządzeń pamięci masowej, uruchamianie menedżera logowania, procesy konfiguracji systemu (ex. nazwa hosta jest ustawiana przez systemd przy uruchomieniu), synchronizacja czasu i lokalizacji, maszyny wirtualne i kontenery.
 
 # Użytkowanie
 ## Komendy zwracające stan systemu
