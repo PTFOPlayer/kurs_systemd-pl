@@ -10,19 +10,19 @@ Do przykładowych procesów wywoływanych przez systemd możemy zaliczyć: wył�
 
 # Użytkowanie
 ## Komendy zwracające stan systemu
-| komenda | akcja | dodatkowe |
-|---------|-------|-----------|
-| systemctl status | podaje status wszystkich daemonów||
-| systemctl | zwraca listę aktywnych daeomonów | z flagą `--failed` zwraca daemony które nie poprawnie wystartowały |
-| systemctl list-unit-files | zwraca listę zainstalowanych daemonów ||
-| systemctl status `<nazwa_unita/nazwa_daemona>` | zwraca status danego daemona| informuje równierz czy dany unit jest uruchomiony | 
-| systemctl help `<nazwa_unita/nazwa_daemona>` | zwraca man-page dla danego unita | działa tylko jeżeli dany unit ma swój man-page|
-| systemctl is-enabled `<nazwa_unita/nazwa_daemona>` | mówi czy dany unit jest wrzucony do autostartu ||
+| komenda                                           | akcja                                     | uwagi                                                              |
+|---------------------------------------------------|-------------------------------------------|--------------------------------------------------------------------|
+| systemctl status                                  | podaje status wszystkich daemonów         |                                                                    |
+| systemctl                                         | zwraca listę aktywnych daeomonów          | z flagą `--failed` zwraca daemony które nie poprawnie wystartowały |
+| systemctl list-unit-files                         | zwraca listę zainstalowanych daemonów     |                                                                    |
+| systemctl status `<nazwa_unita/nazwa_daemona>`    | zwraca status danego daemona              | informuje równierz czy dany unit jest uruchomiony                  | 
+| systemctl help `<nazwa_unita/nazwa_daemona>`      | zwraca man-page dla danego unita          | działa tylko jeżeli dany unit ma swój man-page                     |
+| systemctl is-enabled `<nazwa_unita/nazwa_daemona>`| mówi czy dany unit jest wrzucony do autostartu |                                                               |
 >Notka: powyższe komendy (zazwyczaj) nie muszą być wykonywane jako root
 
 ## Zarządzanie serwisami i unitami
 
-| komenda                                           | akcja                                     | dodatkowe                                                    |
+| komenda                                           | akcja                                     | uwagi                                                        |
 |---------------------------------------------------|-------------------------------------------|--------------------------------------------------------------|
 | systemctl start `<nazwa_unita/nazwa_daemona>`     | rozpoczyna pracę danego unitu             |                                                              |
 | systemctl stop `<nazwa_unita/nazwa_daemona>`      | kończy pracę danego unitu                 |                                                              |
@@ -79,7 +79,7 @@ Do przykładowych procesów wywoływanych przez systemd możemy zaliczyć: wył�
 `[Install]`
 * `WantedBy` - określa przed wejściem w jaki `runlevel` serwis ma być odpalony
 
-| Runlevel | cel                                                    | dodatkowe                                                         |
+| Runlevel | cel                                                    | uwagi                                                             |
 |----------|--------------------------------------------------------|-------------------------------------------------------------------|
 |0         | runlevel0.target, poweroff.target                      | działa tuż przed wyłączeniem systemu                              |
 |1, s      | runlevel1.target, singleuser.target                    | tryb pojedyńczego urzytkownika                                    |
